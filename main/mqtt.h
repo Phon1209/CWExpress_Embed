@@ -13,7 +13,6 @@ extern const char *mqtt_username;
 extern const char *mqtt_password;
 
 extern const char *provinceID; // according to HASC standard
-extern const char *branchID;
 extern const char *machineID;
 
 const char *mqtt_server = "broker.netpie.io";
@@ -160,7 +159,7 @@ void mqttSetup()
   mqttClient->setCallback(callback);
 
   Serial.println("Setup topic for MQTT...");
-  sprintf(temp, "@msg/%s/%s/%s", provinceID, branchID, machineID);
+  sprintf(temp, "@msg/%s/%s", provinceID, machineID);
   strcpy(taskTopic, temp);
   strcat(taskTopic, "/task");
   strcpy(responseTopic, temp);

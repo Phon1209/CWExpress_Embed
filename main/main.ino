@@ -8,7 +8,6 @@
 // const char *mqtt_username = "mqtt device username";
 // const char *mqtt_password = "mqtt password";
 // const char *provinceID = "provinceID"; // according to HASC standard
-// const char *branchID = "branchID";
 // const char *machineID = "machineID";
 
 void setup()
