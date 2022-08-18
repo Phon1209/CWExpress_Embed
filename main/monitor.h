@@ -1,6 +1,7 @@
 #ifndef __MONITOR_H_
 #define __MONITOR_H_
 
+#include "ILI9341_QRCODE.h"
 #include <Adafruit_GFX.h>     // include Adafruit graphics library
 #include <Adafruit_ILI9341.h> // include Adafruit ILI9341 TFT library
 
@@ -11,6 +12,7 @@
 // SCK (CLK) ---> NodeMCU pin D5 (GPIO14)
 // MOSI(DIN) ---> NodeMCU pin D7 (GPIO13)
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+ILI9341_QRcode tftqrcode(&tft);
 
 // -------------------------------------------
 
@@ -290,6 +292,17 @@ unsigned long testFilledRoundRects()
   return micros() - start;
 }
 
+unsigned long testFilledQRcode()
+{
+  unsigned long start;
+
+  tft.fillScreen(ILI9341_WHITE);
+  start = micros();
+  tftqrcode.QR_Code_create("000201010212304701152849799743515100210YV2VIU6JOP0310P0TWKD9ON75204701153037645402205802TH5922TestMerchant16544297666007BANGKOK62350523202208181155237000000000704CWEX63048786", 9, 9);
+
+  return micros() - start;
+}
+
 //------------------------------------------
 
 void monitorTest()
@@ -358,6 +371,10 @@ void monitorTest()
 
   Serial.print(F("Rounded rects (filled)   "));
   Serial.println(testFilledRoundRects());
+  delay(500);
+
+  Serial.print(F("QRcode (filled)          "));
+  Serial.println(testFilledQRcode());
   delay(500);
 
   Serial.println(F("Monitor Test Done!"));
