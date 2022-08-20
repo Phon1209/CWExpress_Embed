@@ -298,7 +298,8 @@ unsigned long testFilledQRcode()
 
   tft.fillScreen(ILI9341_WHITE);
   start = micros();
-  tftqrcode.QR_Code_create("000201010212304701152849799743515100210YV2VIU6JOP0310P0TWKD9ON75204701153037645402205802TH5922TestMerchant16544297666007BANGKOK62350523202208181155237000000000704CWEX63048786", 9, 9);
+  String testQr("https://cwex.insightclockwork.com/machines/100000");
+  tftqrcode.QR_Code_create(testQr, 9, 9);
 
   return micros() - start;
 }
@@ -388,18 +389,10 @@ void monitorSetup()
   monitorTest();
 }
 
-void showBase64Image(char *img)
+void showQrImage(String &rawQr)
 {
+  tft.fillScreen(ILI9341_WHITE);
+  tftqrcode.QR_Code_create(rawQr, 9, 9);
 }
-
-// void loop(void)
-// {
-//   for (uint8_t rotation = 0; rotation < 4; rotation++)
-//   {
-//     tft.setRotation(rotation);
-//     testText();
-//     delay(1000);
-//   }
-// }
 
 #endif

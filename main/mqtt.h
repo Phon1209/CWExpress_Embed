@@ -4,6 +4,7 @@
 #include <PubSubClient.h>
 #include "wifi.h"
 #include "scheduler.h"
+#include "monitor.h"
 
 // ----------------------------------
 // Client data (unique between clients)
@@ -17,8 +18,6 @@ extern const char *machineID;
 
 const char *mqtt_server = "broker.netpie.io";
 const int mqtt_port = 1883;
-
-boolean taskRunning = false;
 
 // Topic Input/ Output
 char temp[50];
@@ -70,9 +69,8 @@ void offBlink()
 void blinkComplete()
 {
   currentTask._done = true;
-  taskRunning = false;
   sprintf(temp, "%d second task completed, now has %d tasks left",
-          currentTask._amount, taskQueue->numElements(taskQueue));
+          currentTask._data, taskQueue->numElements(taskQueue));
   Serial.println(temp);
   mqttClient->publish(completionTopic, temp);
 }
@@ -80,17 +78,17 @@ void blinkComplete()
 
 void executeTask()
 {
-  if (taskQueue->isEmpty(taskQueue) || taskRunning)
+  if (taskQueue->isEmpty(taskQueue) || !currentTask._done)
     return;
 
   taskQueue->pull(taskQueue, &currentTask);
-  taskRunning = true;
 
-  Serial.print("Receive a task: ");
-  Serial.println(currentTask._amount);
+  int amount = currentTask._data;
+  Serial.print("Receive a blink task: ");
+  Serial.println(amount);
 
   // on and off each count as one iteration
-  blinkTask.setIterations(currentTask._amount * 2);
+  blinkTask.setIterations(amount * 2);
   blinkTask.restart();
   blinkTask.enable();
 }
@@ -142,7 +140,9 @@ void callback(char *topic, byte *payload, unsigned int length)
     if (queueNumber == -1)
       sprintf(temp, "Queue Full...");
     else
-      sprintf(temp, "%d second task received on queue %d", newTask._amount, queueNumber);
+    {
+      sprintf(temp, "%d second task received on queue %d", newTask._data, queueNumber);
+    }
     mqttClient->publish(responseTopic, temp);
   }
 }
