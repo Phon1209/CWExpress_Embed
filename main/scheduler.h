@@ -40,6 +40,14 @@ bool createTask(CWTask &newTask, String &msg)
 
     return false;
   }
+  else if (cmd == String("clr"))
+  {
+    clearScreen();
+  }
+  else if (cmd == String("scs"))
+  {
+    showSuccessMark();
+  }
   else
     return false;
 }

@@ -16,6 +16,8 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 /* Function Prototype */
 
 void showQrImage(String &rawQr);
+void clearScreen();
+void showSuccessMark();
 
 // -------------------------------------------
 
@@ -316,70 +318,70 @@ unsigned long testFilledQRcode()
 void monitorTest()
 {
   Serial.println("Begin monitor test");
-  // uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  // Serial.print("Display Power Mode: 0x");
-  // Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDMADCTL);
-  // Serial.print("MADCTL Mode: 0x");
-  // Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDPIXFMT);
-  // Serial.print("Pixel Format: 0x");
-  // Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDIMGFMT);
-  // Serial.print("Image Format: 0x");
-  // Serial.println(x, HEX);
-  // x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  // Serial.print("Self Diagnostic: 0x");
-  // Serial.println(x, HEX);
+  uint8_t x = tft.readcommand8(ILI9341_RDMODE);
+  Serial.print("Display Power Mode: 0x");
+  Serial.println(x, HEX);
+  x = tft.readcommand8(ILI9341_RDMADCTL);
+  Serial.print("MADCTL Mode: 0x");
+  Serial.println(x, HEX);
+  x = tft.readcommand8(ILI9341_RDPIXFMT);
+  Serial.print("Pixel Format: 0x");
+  Serial.println(x, HEX);
+  x = tft.readcommand8(ILI9341_RDIMGFMT);
+  Serial.print("Image Format: 0x");
+  Serial.println(x, HEX);
+  x = tft.readcommand8(ILI9341_RDSELFDIAG);
+  Serial.print("Self Diagnostic: 0x");
+  Serial.println(x, HEX);
 
-  // Serial.println(F("Benchmark                Time (microseconds)"));
+  Serial.println(F("Benchmark                Time (microseconds)"));
 
-  // Serial.print(F("Screen fill              "));
-  // Serial.println(testFillScreen());
-  // delay(500);
+  Serial.print(F("Screen fill              "));
+  Serial.println(testFillScreen());
+  delay(500);
 
-  // Serial.print(F("Text                     "));
-  // Serial.println(testText());
-  // delay(3000);
+  Serial.print(F("Text                     "));
+  Serial.println(testText());
+  delay(3000);
 
-  // Serial.print(F("Lines                    "));
-  // Serial.println(testLines(ILI9341_CYAN));
-  // delay(500);
+  Serial.print(F("Lines                    "));
+  Serial.println(testLines(ILI9341_CYAN));
+  delay(500);
 
-  // Serial.print(F("Horiz/Vert Lines         "));
-  // Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
-  // delay(500);
+  Serial.print(F("Horiz/Vert Lines         "));
+  Serial.println(testFastLines(ILI9341_RED, ILI9341_BLUE));
+  delay(500);
 
-  // Serial.print(F("Rectangles (outline)     "));
-  // Serial.println(testRects(ILI9341_GREEN));
-  // delay(500);
+  Serial.print(F("Rectangles (outline)     "));
+  Serial.println(testRects(ILI9341_GREEN));
+  delay(500);
 
-  // Serial.print(F("Rectangles (filled)      "));
-  // Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
-  // delay(500);
+  Serial.print(F("Rectangles (filled)      "));
+  Serial.println(testFilledRects(ILI9341_YELLOW, ILI9341_MAGENTA));
+  delay(500);
 
-  // Serial.print(F("Circles (filled)         "));
-  // Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
+  Serial.print(F("Circles (filled)         "));
+  Serial.println(testFilledCircles(10, ILI9341_MAGENTA));
 
-  // Serial.print(F("Circles (outline)        "));
-  // Serial.println(testCircles(10, ILI9341_WHITE));
-  // delay(500);
+  Serial.print(F("Circles (outline)        "));
+  Serial.println(testCircles(10, ILI9341_WHITE));
+  delay(500);
 
-  // Serial.print(F("Triangles (outline)      "));
-  // Serial.println(testTriangles());
-  // delay(500);
+  Serial.print(F("Triangles (outline)      "));
+  Serial.println(testTriangles());
+  delay(500);
 
-  // Serial.print(F("Triangles (filled)       "));
-  // Serial.println(testFilledTriangles());
-  // delay(500);
+  Serial.print(F("Triangles (filled)       "));
+  Serial.println(testFilledTriangles());
+  delay(500);
 
-  // Serial.print(F("Rounded rects (outline)  "));
-  // Serial.println(testRoundRects());
-  // delay(500);
+  Serial.print(F("Rounded rects (outline)  "));
+  Serial.println(testRoundRects());
+  delay(500);
 
-  // Serial.print(F("Rounded rects (filled)   "));
-  // Serial.println(testFilledRoundRects());
-  // delay(500);
+  Serial.print(F("Rounded rects (filled)   "));
+  Serial.println(testFilledRoundRects());
+  delay(500);
 
   Serial.print(F("QRcode (filled)          "));
   Serial.println(testFilledQRcode());
@@ -393,7 +395,7 @@ void monitorSetup()
   Serial.println("ILI9341 Monitor Setting up!");
   tft.begin();
   // Optional but can help debugging
-  monitorTest();
+  // monitorTest();
 }
 
 /*---- Utilities ----*/
@@ -419,7 +421,7 @@ static void printQr(const uint8_t qrcode[])
 
 void showQrImage(String &rawQr)
 {
-  tft.fillScreen(ILI9341_WHITE);
+  clearScreen();
   const char *text = rawQr.c_str();                    // User-supplied text
   enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_MEDIUM; // Error correction level
 
@@ -444,6 +446,30 @@ void showQrImage(String &rawQr)
   else
     Serial.println("Error: Something went wrong while creating qrcode");
   // tftqrcode.QR_Code_create(rawQr, 9, 9);
+}
+
+void clearScreen()
+{
+  tft.fillScreen(ILI9341_WHITE);
+}
+
+void showSuccessMark()
+{
+  clearScreen();
+  // 3 x-y dot positions of checkmark
+  int pointX[] = {78, 113, 163};
+  int pointY[] = {125, 152, 82};
+
+  tft.fillCircle(120, 120, 100, ILI9341_GREEN);
+  for (int i = 1; i < 3; i++)
+  {
+    for (int step = 0; step < 100; step++)
+    {
+      int nx = ((pointX[i] - pointX[i - 1]) * step) / 100 + pointX[i - 1];
+      int ny = ((pointY[i] - pointY[i - 1]) * step) / 100 + pointY[i - 1];
+      tft.fillCircle(nx, ny, 5, ILI9341_WHITE);
+    }
+  }
 }
 
 #endif
