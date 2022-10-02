@@ -37,8 +37,6 @@ bool createTask(CWTask &newTask, String &msg)
     String qrRaw = msg.substring(cmdIndex + 1);
 
     showQrImage(qrRaw);
-
-    return false;
   }
   else if (cmd == String("clr"))
   {
@@ -48,8 +46,7 @@ bool createTask(CWTask &newTask, String &msg)
   {
     showSuccessMark();
   }
-  else
-    return false;
+  return false;
 }
 
 #endif
